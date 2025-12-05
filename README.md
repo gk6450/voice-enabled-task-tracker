@@ -16,7 +16,7 @@ A full-stack, AI-powered Kanban task manager that allows users to create tasks u
 9. [API Documentation](#-api-documentation)
 10. [Design Decisions & Assumptions](#-design-decisions--assumptions)
 11. [AI Tools Usage](#-ai-tools-usage)
-12. [Edge Cases Handled](#-edge-cases-handled)
+12. [Edge Cases Handled](#edge-cases-handled)
 
 ---
 
@@ -235,7 +235,7 @@ This project utilized GenAI tools to accelerate development:
 
 -----
 
-## ⚠️ Edge Cases Handled
+## Edge Cases Handled
 
 1.  **"Next Friday" Logic:** The system strictly verifies that the calculated date matches the requested day of the week to avoid off-by-one errors.
 2.  **Network Failures:** If the backend is down, the Frontend automatically switches to **Demo Mode**, loading mock data so the UI remains reviewable.
