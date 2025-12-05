@@ -150,6 +150,12 @@ ASSEMBLYAI_API_KEY=your_assemblyai_key
 GEMINI_API_KEY=your_gemini_key
 ```
 
+Create a `.env` file in the `frontend/` folder:
+
+```env
+VITE_BACKEND_URL=http://localhost:3000/api
+```
+
 ### 4\. Run Application
 
 **Backend:** `npm start` (Runs on port 3000)
