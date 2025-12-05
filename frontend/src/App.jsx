@@ -28,11 +28,11 @@ export default function App() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isDemoMode, setIsDemoMode] = useState(false);
-  
+
   // Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
   const [filterPriority, setFilterPriority] = useState('All');
-  
+
   // Modals
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
@@ -40,7 +40,7 @@ export default function App() {
 
   const fetchTasks = async () => {
     setLoading(true);
-    await new Promise(r => setTimeout(r, 800)); 
+    await new Promise(r => setTimeout(r, 800));
 
     try {
       const data = await api.fetchTasks();
@@ -63,8 +63,8 @@ export default function App() {
 
   // --- Filtering Logic ---
   const filteredTasks = tasks.filter(task => {
-    const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          (task.description && task.description.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (task.description && task.description.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesPriority = filterPriority === 'All' || task.priority === filterPriority;
     return matchesSearch && matchesPriority;
   });
@@ -73,9 +73,9 @@ export default function App() {
     const currentTime = getCurrentTimeDBFormat();
 
     if (isDemoMode) {
-      const newTask = { 
-        ...taskData, 
-        id: taskData.id || Date.now(), 
+      const newTask = {
+        ...taskData,
+        id: taskData.id || Date.now(),
         updated_at: currentTime,
         // If creating, add created_at
         created_at: taskData.id ? (tasks.find(t => t.id === taskData.id)?.created_at) : currentTime
@@ -103,30 +103,36 @@ export default function App() {
   const handleDrop = async (e, newStatus) => {
     const taskId = e.dataTransfer.getData("taskId");
     const task = tasks.find(t => t.id.toString() == taskId);
-    
+
     if (task && task.status !== newStatus) {
       // FIX: Use the helper to generate the correct date string format
-      const updated = { 
-        ...task, 
-        status: newStatus, 
-        updated_at: getCurrentTimeDBFormat() 
+      const updated = {
+        ...task,
+        status: newStatus,
+        updated_at: getCurrentTimeDBFormat()
       };
-      
+
       // Optimistic update
       setTasks(prev => prev.map(t => t.id === task.id ? updated : t));
-      
+
       if (!isDemoMode) await api.updateTask(task.id, { status: newStatus });
     }
   };
 
   return (
     <div className="h-screen flex flex-col bg-slate-50 text-slate-900 font-sans overflow-hidden">
-      
+
       {/* 1. Header (Fixed) */}
       <header className="flex-none bg-white border-b border-slate-200 px-6 py-4 z-20 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shadow-sm">T</div>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold shadow-sm">
+              <img
+                src="/voice.svg"
+                alt="Voice Task Tracker Logo"
+                className="h-8 w-8"
+              />
+            </div>
             <h1 className="text-xl font-bold text-slate-800 tracking-tight">TaskTracker</h1>
             {isDemoMode && (
               <span className="flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs rounded-full font-medium border border-amber-200">
@@ -146,74 +152,74 @@ export default function App() {
 
         {/* 2. Global Toolbar */}
         <div className="flex flex-col sm:flex-row gap-4">
-           {/* Search Bar */}
-           <div className="relative flex-1 max-w-md">
-             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-             <input 
-               type="text" 
-               placeholder="Search tasks..." 
-               value={searchQuery}
-               onChange={(e) => setSearchQuery(e.target.value)}
-               className="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-md text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-             />
-             {searchQuery && (
-               <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-                 <X size={14} />
-               </button>
-             )}
-           </div>
+          {/* Search Bar */}
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <input
+              type="text"
+              placeholder="Search tasks..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 bg-slate-100 border-none rounded-md text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                <X size={14} />
+              </button>
+            )}
+          </div>
 
-           {/* Priority Filter */}
-           <div className="flex items-center gap-2">
-             <Filter size={18} className="text-slate-400" />
-             <select 
-               value={filterPriority}
-               onChange={(e) => setFilterPriority(e.target.value)}
-               className="bg-slate-100 text-sm font-medium text-slate-600 py-2 px-3 rounded-md outline-none focus:ring-2 focus:ring-blue-500 border-r-[8px] border-r-transparent"
-             >
-               <option value="All">All Priorities</option>
-               <option value="Critical">Critical</option>
-               <option value="High">High</option>
-               <option value="Medium">Medium</option>
-               <option value="Low">Low</option>
-             </select>
-           </div>
+          {/* Priority Filter */}
+          <div className="flex items-center gap-2">
+            <Filter size={18} className="text-slate-400" />
+            <select
+              value={filterPriority}
+              onChange={(e) => setFilterPriority(e.target.value)}
+              className="bg-slate-100 text-sm font-medium text-slate-600 py-2 px-3 rounded-md outline-none focus:ring-2 focus:ring-blue-500 border-r-[8px] border-r-transparent"
+            >
+              <option value="All">All Priorities</option>
+              <option value="Critical">Critical</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
         </div>
       </header>
 
       {/* 3. Main Board Area */}
       <main className="flex-1 overflow-y-auto p-6 scroll-smooth">
-          <div className="flex flex-col md:flex-row gap-6 min-h-full">
-            {['To Do', 'In Progress', 'Done'].map(status => (
-                <Column 
-                    key={status}
-                    title={status} 
-                    status={status} 
-                    tasks={filteredTasks.filter(t => t.status === status)} 
-                    loading={loading}
-                    onDrop={handleDrop}
-                    onEdit={(t) => { setEditingTask(t); setIsTaskModalOpen(true); }}
-                />
-            ))}
-          </div>
+        <div className="flex flex-col md:flex-row gap-6 min-h-full">
+          {['To Do', 'In Progress', 'Done'].map(status => (
+            <Column
+              key={status}
+              title={status}
+              status={status}
+              tasks={filteredTasks.filter(t => t.status === status)}
+              loading={loading}
+              onDrop={handleDrop}
+              onEdit={(t) => { setEditingTask(t); setIsTaskModalOpen(true); }}
+            />
+          ))}
+        </div>
       </main>
 
       {/* Modals */}
-      <TaskModal 
-        isOpen={isTaskModalOpen} 
-        onClose={() => setIsTaskModalOpen(false)} 
+      <TaskModal
+        isOpen={isTaskModalOpen}
+        onClose={() => setIsTaskModalOpen(false)}
         onSubmit={handleCreateOrUpdate}
         onDelete={handleDelete}
         initialData={editingTask}
       />
-      
-      <VoiceInputModal 
-        isOpen={isVoiceModalOpen} 
-        onClose={() => setIsVoiceModalOpen(false)} 
+
+      <VoiceInputModal
+        isOpen={isVoiceModalOpen}
+        onClose={() => setIsVoiceModalOpen(false)}
         onTaskReady={(data) => {
-           setIsVoiceModalOpen(false);
-           setEditingTask(data);
-           setIsTaskModalOpen(true);
+          setIsVoiceModalOpen(false);
+          setEditingTask(data);
+          setIsTaskModalOpen(true);
         }}
       />
     </div>
