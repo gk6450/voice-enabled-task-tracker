@@ -25,6 +25,8 @@ This project solves the friction of manual data entry in task management. Instea
 
 It combines a modern React frontend with a robust Node.js backend, leveraging **AssemblyAI** for industry-leading speech recognition and **Google Gemini** for intelligent entity extraction.
 
+🔗 **Live Demo:** https://voice-enabled-task-tracker-pied.vercel.app/
+
 ---
 
 ## 🚀 Key Features
