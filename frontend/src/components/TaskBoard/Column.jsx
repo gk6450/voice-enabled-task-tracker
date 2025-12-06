@@ -16,7 +16,6 @@ const parseForSort = (dateStr) => {
   return new Date(year, month - 1, day).getTime();
 };
 
-// FIX: Added 'tasks = []' default value to prevent undefined error
 export default function Column({ title, status, tasks = [], loading, onDrop, onEdit }) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [sortType, setSortType] = useState({ field: 'date', dir: 'desc' });
@@ -36,7 +35,6 @@ export default function Column({ title, status, tasks = [], loading, onDrop, onE
 
   // --- Sorting Logic ---
   const getSortedTasks = () => {
-    // FIX: Ensure tasks is an array before spreading
     if (!Array.isArray(tasks)) return [];
 
     let sorted = [...tasks];
@@ -153,7 +151,6 @@ export default function Column({ title, status, tasks = [], loading, onDrop, onE
           ))
         )}
 
-        {/* FIX: Increased height from h-32 to h-48 to match TaskCard size */}
         {!loading && taskCount === 0 && (
           <div className="h-42 border-2 border-dashed border-slate-200 rounded-lg flex items-center justify-center text-slate-400 text-xs font-medium">
             Drop tasks here

@@ -105,7 +105,6 @@ export default function App() {
     const task = tasks.find(t => t.id.toString() == taskId);
 
     if (task && task.status !== newStatus) {
-      // FIX: Use the helper to generate the correct date string format
       const updated = {
         ...task,
         status: newStatus,

@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.BACKEND_URL || 'http://localhost:3000/api';
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
 
 export const api = {
   fetchTasks: async () => {

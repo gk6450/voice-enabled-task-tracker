@@ -16,7 +16,7 @@ const parseCustomDate = (dateStr) => {
   const [datePart, timePart] = dateStr.split(' ');
   const [day, month, year] = datePart.split('-').map(Number);
   
-  // Note: Month is 0-indexed in JS Date (0 = Jan, 11 = Dec)
+  // Month is 0-indexed in JS Date (0 = Jan, 11 = Dec)
   if (timePart) {
     const [hours, minutes, seconds] = timePart.split(':').map(Number);
     return new Date(year, month - 1, day, hours, minutes, seconds);
