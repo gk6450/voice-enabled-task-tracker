@@ -27,6 +27,10 @@ It combines a modern React frontend with a robust Node.js backend, leveraging **
 
 🔗 **[Live Demo](https://voice-enabled-task-tracker-pied.vercel.app/)**
 
+> ⚠️ **Note:** This project's backend is hosted on a free Render instance.  
+> Free instances spin down when inactive, so the **first request may take up to 50 seconds or more** to load.  
+> On the very first load, the tasks may appear only after the server wakes up.
+
 ---
 
 ## 🚀 Key Features
